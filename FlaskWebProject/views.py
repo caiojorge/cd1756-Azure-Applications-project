@@ -86,10 +86,16 @@ def authorized():
     if request.args.get('code'):
         cache = _load_cache()
         msal_app = _build_msal_app(cache=cache, authority=Config.AUTHORITY)
+        # result = msal_app.acquire_token_by_authorization_code(
+        #     request.args.get('code'),
+        #     scopes=Config.SCOPE,
+        #     redirect_uri=url_for('authorized', _external=True)
+        # )
+
         result = msal_app.acquire_token_by_authorization_code(
             request.args.get('code'),
             scopes=Config.SCOPE,
-            redirect_uri=url_for('authorized', _external=True)
+            redirect_uri=Config.REDIRECT_URI
         )
         if "error" in result:
             return render_template("auth_error.html", result=result)
@@ -134,7 +140,14 @@ def _build_msal_app(cache=None, authority=None):
         token_cache=cache
     )
 
+# def _build_auth_url(authority=None, scopes=None, state=None):
+#     msal_app = _build_msal_app(authority=authority)
+#     redirect = url_for('authorized', _external=True)
+#     return msal_app.get_authorization_request_url(scopes or [], state=state, redirect_uri=redirect)
+
 def _build_auth_url(authority=None, scopes=None, state=None):
-    msal_app = _build_msal_app(authority=authority)
-    redirect = url_for('authorized', _external=True)
-    return msal_app.get_authorization_request_url(scopes or [], state=state, redirect_uri=redirect)
+    return _build_msal_app(authority=authority).get_authorization_request_url(
+        scopes or [],
+        state=state,
+        redirect_uri=Config.REDIRECT_URI
+    )

@@ -12,7 +12,16 @@ from flask_session import Session
 app = Flask(__name__)
 app.config.from_object(Config)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-# TODO: Add any logging levels and handlers with app.logger
+
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+handler.setFormatter(logging.Formatter(
+    '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+))
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+app.logger.info('Application starting up')
+
 Session(app)
 db = SQLAlchemy(app)
 login = LoginManager(app)

@@ -3,7 +3,7 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template, flash, redirect, request, session, url_for
+from flask import render_template, flash, redirect, request, session, url_for, g
 from werkzeug.urls import url_parse
 from config import Config
 from FlaskWebProject import app, db
@@ -12,8 +12,22 @@ from flask_login import current_user, login_user, logout_user, login_required
 from FlaskWebProject.models import User, Post
 import msal
 import uuid
+import time
 
 imageSourceUrl = 'https://'+ app.config['BLOB_ACCOUNT']  + '.blob.core.windows.net/' + app.config['BLOB_CONTAINER']  + '/'
+
+@app.before_request
+def log_request_start():
+    g.start_time = time.time()
+    app.logger.info('IN %s %s - user: %s', request.method, request.path,
+                    current_user.username if current_user.is_authenticated else 'anonymous')
+
+@app.after_request
+def log_request_end(response):
+    elapsed = (time.time() - g.start_time) * 1000
+    app.logger.info('OUT %s %s - status: %s  (%.1f ms)',
+                    request.method, request.path, response.status_code, elapsed)
+    return response
 
 @app.route('/')
 @app.route('/home')

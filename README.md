@@ -58,3 +58,10 @@ This folder contains sample screenshots that students are required to submit in 
 All Python dependencies are stored in the requirements.txt file. To install them, using Visual Studio 2019 Community Edition:
 1. In the Solution Explorer, expand "Python Environments"
 2. Right-click on "Python 3.10 (64-bit) (global default)" and select "Install from requirements.txt"
+
+## Local Run Instructions
+source venv/bin/activate
+/opt/homebrew/bin/python3.12 -m venv venv
+pip install -r requirements.txt
+pip list
+python application.py

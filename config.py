@@ -14,7 +14,7 @@ class Config(object):
     SQL_USER_NAME = os.environ.get('SQL_USER_NAME') or 'udacityadmin'
     SQL_PASSWORD = os.environ.get('SQL_PASSWORD') or ''
     # Below URI may need some adjustments for driver version, based on your OS, if running locally
-    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
+    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE + '?driver=ODBC+Driver+17+for+SQL+Server'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     ### Info for MS Authentication ###
@@ -34,8 +34,8 @@ class Config(object):
    
     CLIENT_ID = os.environ.get('CLIENT_ID') or ''
 
-    #REDIRECT_PATH = "/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
-    REDIRECT_URI = "https://udacitycms-hxehgtgabvfdgxay.chilecentral-01.azurewebsites.net/getAToken"
+    REDIRECT_PATH = "/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
+    # REDIRECT_URI = "https://udacitycms-hxehgtgabvfdgxay.chilecentral-01.azurewebsites.net/getAToken"
     # You can find the proper permission names from this document
     # https://docs.microsoft.com/en-us/graph/permissions-reference
     SCOPE = ["User.Read"] # Only need to read user profile for this app
